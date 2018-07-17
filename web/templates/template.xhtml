@@ -7,8 +7,8 @@
       xmlns:p="http://primefaces.org/ui">
     <f:view encoding="ISO-8859-1" contentType="text/html">
         <h:head>
-            <title><ui:insert name="titulo">titulo da pagina</ui:insert> </title>
-            <h:outputStylesheet library="css" name="estilo.css"/>
+            <title><ui:insert name="titulo">titulo da pagina</ui:insert></title>
+            <h:outputStylesheet library="css" name="estilos.css"/>
             <h:outputScript library="js" name="scripts.js"/>
         </h:head>
         <p:layout fullPage="true">
@@ -18,30 +18,27 @@
                         <p:submenu label="Cadastros">
                             <p:column>
                                 <p:submenu label="Básicos">
-                                    <p:menuitem action="#{controlePais.listar()}" 
-                                                value="Manutenção de Países" 
+                                    <p:menuitem action="#{controlePais.listar()}"
+                                                value="Manutenção de Países"
                                                 ajax="false"/>
                                 </p:submenu>
                             </p:column>
                         </p:submenu>
-                    </p:megaMenu>  
+                    </p:megaMenu>
                 </h:form>
             </p:layoutUnit>
-
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo">
-
+                    
                 </ui:insert>
             </p:layoutUnit>
             <ui:insert name="dialogos">
-
+                
             </ui:insert>
             <p:layoutUnit position="south">
                 <ui:include src="/templates/ajaxstatus.xhtml"/>
                 <div align="center">Sistema Nameless</div>
             </p:layoutUnit>
         </p:layout>
-
     </f:view>
 </html>
-

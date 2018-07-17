@@ -5,19 +5,20 @@ import br.com.edu.util.Util;
 import br.com.modeljpa.modelo.Pais;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author t1076986
  */
 @ManagedBean(name = "controlePais")
+@SessionScoped //as classes controles @ManagedBean servem para responder os comandos da interface, ou seja, do usuário
 public class ControlePais implements Serializable{
-    private PaisDAO<Pais> DAO;
-    
-    private Pais pais;
+    private PaisDAO<Pais> DAO;//esse primeiro serve para interação com o banco de dados
+    private Pais pais;//esse vai servir para receber a instancia que vou estar editando ou inserindo 
 
     public ControlePais() {
-        DAO = new PaisDAO<>();
+        DAO = new PaisDAO<>(); // no construtor de qualquer classe controle @Managedbean, é bom iniciar no construtor os objetos do tipo DAO
     }
     
     public String listar(){
@@ -31,11 +32,12 @@ public class ControlePais implements Serializable{
     
     public String salvar(){
         boolean persistiu = false;
-        if(pais.getId() ==null){
+        if(pais.getId() == null){
             persistiu = DAO.persistGenerico(pais);
         }else{
             persistiu = DAO.mergeGenerico(pais);
         }
+        
         if(persistiu){
             Util.mensagemInformacao(DAO.getMenssagem());
             return "listar?faces-redirect=true";

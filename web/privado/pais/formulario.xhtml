@@ -6,35 +6,36 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/template.xhtml">
-        <ui:define name="titulo">Edição de Pais</ui:define>
+        <ui:define name="titulo">Edição de País</ui:define> 
         <ui:define name="conteudo">
             <h:form>
                 <p:growl/>
                 <div align="center">
                     <p:panelGrid columns="2">
                         <f:facet name="header">
-                            <p:outputLabel value="Dados do País"/>
+                            <p:outputLabel value="Dados do Pís"/>
                         </f:facet>
                         <f:facet name="footer">
                             <div align="center">
-                                <p:commandButton value="Cancelar" action="#{controlePais.cancelarEdicao()}" ajax="false" icon="ui-icon-remove" immediate="true"/>
-                                <p:commandButton value="Cancelar" action="#{controlePais.cancelarEdicao()}" ajax="false" icon="ui-icon-disk"/>
+                                <p:commandButton value="Cancelar" action="#{controlePais.cancelarEdicao()}" ajax="false" immediate="true"/>
+                                <p:commandButton value="Salvar" action="#{controlePais.salvar()}" ajax="false" icon="ui-icon-disk"/>
                             </div>
                         </f:facet>
                         <p:outputLabel value="ID"/>
                         <p:inputText value="#{controlePais.pais.id}" size="5" readonly="true"/>
                         <p:outputLabel value="Nome" for="txtNome"/>
-                        <p:inputText id="txtNome" value="#{controlePais.pais.nome}" size="50" maxlength="50" placeholder="Obrigatório"/>
+                        <p:inputText value="#{controlePais.pais.nome}" id="txtNome" size="50" maxlength="50" placeholder="Obrigatório"/>
                         <p:outputLabel value="ISO" for="txtIso"/>
                         <p:inputText id="txtIso" value="#{controlePais.pais.iso}" size="4" maxlength="3" placeholder="Obrigatório"/>
-                        
                     </p:panelGrid>
 
                 </div>
 
-            </h:form>           
+            </h:form>
+
         </ui:define>
 
     </ui:composition>
+
 </html>
 
