@@ -110,11 +110,11 @@ public class DAOGenerico<T> implements Serializable{
             em.getTransaction().begin();
             em.merge(obj);
             em.getTransaction().commit();
-            menssagem = obj.getClass().getSimpleName() + " persistido com sucesso!";
+            menssagem = obj.getClass().getSimpleName() + " salvo(a) com sucesso!";
             return true;
         } catch (Exception e) {
             roolback();
-            menssagem = "Erro ao persistir o(a) "+ obj.getClass().getSimpleName()+", sendo o erro "+  Util.getMensagemErro(e); //assim eu coloco o nome da classe e ainda utilizo o util para trazer até o ultimo nivel qual é realmente o erro
+            menssagem = "Erro ao salvar o(a) "+ obj.getClass().getSimpleName()+", sendo o erro "+  Util.getMensagemErro(e); //assim eu coloco o nome da classe e ainda utilizo o util para trazer até o ultimo nivel qual é realmente o erro
             return false;
         }
     }

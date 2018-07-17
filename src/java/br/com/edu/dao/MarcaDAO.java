@@ -1,4 +1,4 @@
-package br.com.edu.controle;
+package br.com.edu.dao;
 
 import br.com.edu.dao.DAOGenerico;
 import br.com.modeljpa.modelo.Marca;
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Haylton
  */
 //DAO (Data access Object)uma classe que encapsula o acesso aos dados pela JPA
-public class MarcaDAO extends DAOGenerico<Marca> implements Serializable{
+public class MarcaDAO<T> extends DAOGenerico<Marca> implements Serializable{
 
     public MarcaDAO() {
         super(); //chamo o contstrutor do pais (DAOGenerico<Pais>) para inicializar a entityManager

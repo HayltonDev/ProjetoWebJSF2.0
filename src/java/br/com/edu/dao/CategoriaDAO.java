@@ -1,4 +1,4 @@
-package br.com.edu.controle;
+package br.com.edu.dao;
 
 import br.com.edu.dao.DAOGenerico;
 import br.com.modeljpa.modelo.Categoria;
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author Haylton
  */
 //DAO (Data Acess Object) uma classe que encapsula o acesso aos dados pela JPA
-public class CategoriaDAO extends DAOGenerico<Categoria> implements Serializable{
+public class CategoriaDAO<T> extends DAOGenerico<Categoria> implements Serializable{
 
     public CategoriaDAO() {
         super(); //chamo a super ( DAOGenerico<Categoria> ) passando a categoria para inicializar a EntityManager

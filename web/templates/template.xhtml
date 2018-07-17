@@ -17,13 +17,20 @@
                     <p:megaMenu>
                         <p:submenu label="Cadastros">
                             <p:column>
-                                <p:submenu label="Básicos">
+                                <p:submenu label="Manutenção Básica">
                                     <p:menuitem action="#{controlePais.listar()}"
-                                                value="Manutenção de Países"
+                                                value="Pais"
+                                                ajax="false"/>
+                                    <p:menuitem action="#{controleCategoria.listar()}"
+                                                value="Categoria"
+                                                ajax="false"/>
+                                    <p:menuitem action="#{controleMarca.listar()}"
+                                                value="Marca"
                                                 ajax="false"/>
                                 </p:submenu>
                             </p:column>
                         </p:submenu>
+                        
                     </p:megaMenu>
                 </h:form>
             </p:layoutUnit>
