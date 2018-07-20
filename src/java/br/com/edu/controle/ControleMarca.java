@@ -34,15 +34,15 @@ public class ControleMarca extends DAOGenerico<Marca> implements Serializable{
     public String salvar(){
         boolean persistiu = false;
         if(marca.getId() == null){
-            persistiu = dao.persistGenerico(marca);
+            persistiu = dao.persist(marca);
         }else{
-            persistiu = dao.mergeGenerico(marca);
+            persistiu = dao.merge(marca);
         }
         if(persistiu){
-            Util.mensagemInformacao(dao.getMenssagem());
+            Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
         }else{
-            Util.mensagemErro(dao.getMenssagem());
+            Util.mensagemErro(dao.getMensagem());
             return "formulario?faces-redirect=true";
         }
         
@@ -53,16 +53,16 @@ public class ControleMarca extends DAOGenerico<Marca> implements Serializable{
     }
     
     public String editar(Integer id){
-        marca = dao.localizarGenerico(id);
+        marca = dao.localizar(id);
         return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id){
-        marca = dao.localizarGenerico(id);
-        if(dao.removeGenerico(marca)){
-            Util.mensagemInformacao(dao.getMenssagem());
+        marca = dao.localizar(id);
+        if(dao.remove(marca)){
+            Util.mensagemInformacao(dao.getMensagem());
         }else{
-            Util.mensagemErro(dao.getMenssagem());
+            Util.mensagemErro(dao.getMensagem());
         }
     }
 

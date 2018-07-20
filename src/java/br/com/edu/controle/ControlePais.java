@@ -12,13 +12,14 @@ import javax.faces.bean.SessionScoped;
  * @author t1076986
  */
 @ManagedBean(name = "controlePais")
-@SessionScoped //as classes controles @ManagedBean servem para responder os comandos da interface, ou seja, do usuário
-public class ControlePais implements Serializable{
-    private PaisDAO<Pais> DAO;//esse primeiro serve para interação com o banco de dados
-    private Pais pais;//esse vai servir para receber a instancia que vou estar editando ou inserindo 
-
-    public ControlePais() {
-        DAO = new PaisDAO<>(); // no construtor de qualquer classe controle @Managedbean, é bom iniciar no construtor os objetos do tipo DAO
+@SessionScoped
+public class ControlePais implements Serializable {
+    
+    private PaisDAO<Pais> dao;
+    private Pais objeto;
+    
+    public ControlePais(){
+        dao = new PaisDAO<>();
     }
     
     public String listar(){
@@ -26,62 +27,57 @@ public class ControlePais implements Serializable{
     }
     
     public String novo(){
-        pais = new Pais();
-        return "formulario?faces-redirect=true";
+        objeto = new Pais();
+        return "formulario?faces-redirect=true";        
     }
     
     public String salvar(){
         boolean persistiu = false;
-        if(pais.getId() == null){
-            persistiu = DAO.persistGenerico(pais);
-        }else{
-            persistiu = DAO.mergeGenerico(pais);
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
+        } else {
+            persistiu = dao.merge(objeto);
         }
-        
-        if(persistiu){
-            Util.mensagemInformacao(DAO.getMenssagem());
+        if (persistiu){
+            Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
-        }else{
-            Util.mensagemErro(DAO.getMenssagem());
+        } else {
+            Util.mensagemErro(dao.getMensagem());
             return "formulario?faces-redirect=true";
         }
     }
     
-    public String cancelarEdicao(){
+    public String cancelar(){
         return "listar?faces-redirect=true";
     }
     
     public String editar(Integer id){
-        pais = DAO.localizarGenerico(id);
+        objeto = dao.localizar(id);
         return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id){
-        pais = DAO.localizarGenerico(id);
-        if(DAO.removeGenerico(pais)){
-            Util.mensagemInformacao(DAO.getMenssagem());
-        }else{
-            Util.mensagemErro(DAO.getMenssagem());
+        objeto = dao.localizar(id);
+        if (dao.remove(objeto)){
+            Util.mensagemInformacao(dao.getMensagem());
+        } else {
+            Util.mensagemErro(dao.getMensagem());
         }
     }
     
-
-    public PaisDAO<Pais> getDAO() {
-        return DAO;
+    public PaisDAO getDao() {
+        return dao;
     }
 
-    public void setDAO(PaisDAO<Pais> DAO) {
-        this.DAO = DAO;
+    public void setDao(PaisDAO dao) {
+        this.dao = dao;
     }
 
-    public Pais getPais() {
-        return pais;
+    public Pais getObjeto() {
+        return objeto;
     }
 
-    public void setPais(Pais pais) {
-        this.pais = pais;
-    }
-    
-    
-    
+    public void setObjeto(Pais objeto) {
+        this.objeto = objeto;
+    }    
 }

@@ -35,16 +35,16 @@ public class ControleCategoria implements Serializable{
     public String salvar(){
         boolean persistiu = false;
         if(categoria.getId() ==null){
-            persistiu = DAO.persistGenerico(categoria);
+            persistiu = DAO.persist(categoria);
         }else{
-            persistiu = DAO.mergeGenerico(categoria);
+            persistiu = DAO.merge(categoria);
         }
         
         if(persistiu){
-            Util.mensagemInformacao(DAO.getMenssagem());
+            Util.mensagemInformacao(DAO.getMensagem());
             return "listar?faces-redirect=true";
         }else{
-            Util.mensagemErro(DAO.getMenssagem());
+            Util.mensagemErro(DAO.getMensagem());
             return "formulario?faces-redirect=true";        
         }
     }
@@ -54,16 +54,16 @@ public class ControleCategoria implements Serializable{
     }
     
     public String editar(Integer id){
-        categoria = DAO.localizarGenerico(id);
+        categoria = DAO.localizar(id);
         return "formulario?faces-redirect=true";
     }
     
     public void remover(Integer id){
-        categoria = DAO.localizarGenerico(id);
-        if(DAO.removeGenerico(categoria)){
-            Util.mensagemInformacao(DAO.getMenssagem());
+        categoria = DAO.localizar(id);
+        if(DAO.remove(categoria)){
+            Util.mensagemInformacao(DAO.getMensagem());
         }else{
-            Util.mensagemErro(DAO.getMenssagem());
+            Util.mensagemErro(DAO.getMensagem());
         }
     }
 

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Lista de Tipo de Endereço</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <p:growl/>
+                <p:commandButton value="Novo" actionListener="#{controleTipoEndereco.novo()}" 
+                                 icon="ui-icon-plus" oncomplete="PF('dlg').show();" update=":formEdicao"/>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem:"/>
+                        <p:selectOneMenu value="#{controleTipoEndereco.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Descrição" itemValue="descricao"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro:"/>
+                        <p:inputText value="#{controleTipoEndereco.dao.filtro}" size="15">
+                            <p:ajax update="listagem" event="keyup"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem" icon="ui-icon-search"/>
+                        <p:outputLabel value="Máximo objetos"/>
+                        <p:inputNumber value="#{controleTipoEndereco.dao.maximoObjetos}" decimalPlaces="0" decimalSeparator="" thousandSeparator=""/>
+                        <p:commandButton value="Primeiro" actionListener="#{controleTipoEndereco.dao.paginaPrimeira()}" icon="ui-icon-seek-first" update="listagem"/>
+                        <p:commandButton value="Anterior" actionListener="#{controleTipoEndereco.dao.paginaAnterior()}" icon="ui-icon-seek-prev" update="listagem"/>
+                        <p:commandButton value="Próximo" actionListener="#{controleTipoEndereco.dao.paginaProxima()}" icon="ui-icon-seek-next" update="listagem"/>
+                        <p:commandButton value="Última" actionListener="#{controleTipoEndereco.dao.paginaUltima()}" icon="ui-icon-seek-end" update="listagem"/>
+                        
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controleTipoEndereco.dao.listaObjetos}" var="obj" id="listagem">
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controleTipoEndereco.dao.mensagemNavegacao}"/>
+                    </f:facet>
+                    
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Descrição">
+                        <p:outputLabel value="#{obj.descricao}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton title="Editar" actionListener="#{controleTipoEndereco.editar(obj.id)}"
+                                             oncomplete="PF('dlg').show();" icon="ui-icon-pencil"
+                                             update=":formEdicao"/>
+                            <p:commandButton title="Remover" actionListener="#{controleTipoEndereco.remover(obj.id)}"
+                                             icon="ui-icon-trash" update="@form"
+                                             onclick="if(!confirm('Confirma a exclusão desse Tipo de Endereço')) return false"/>
+                        </div>
+                            
+                    </p:column>
+                
+                </p:dataTable>
+                
+            </h:form>
+            
+        </ui:define>
+        
+        <ui:define name="dialogos">
+            <p:dialog widgetVar="dlg" header="Edição" draggable="true" maximizable="true" minimizable="true" showEffect="fade" hideEffect="slide" resizable="false">
+                <h:form id="formEdicao">
+                    <p:growl/>
+                    <div align="center">
+                        <p:panelGrid columns="2">
+                            <f:facet name="footer">
+                                <div align="center">
+                                    <p:commandButton value="Salvar" icon="ui-icon-disk"
+                                                     actionListener="#{controleTipoEndereco.salvar()}"
+                                                     oncomplete="if(!args.validationFailed){PF('dlg').hide();}"
+                                                     update=":formEdicao :formListagem"/>
+                                </div> <!--se não falhar a validação dos argumentos, deu tudo certo e então ele fecha o modal. Isso é explicado na aula 12, minuto 10 em diante-->
+                            </f:facet>
+                            <p:outputLabel value="ID"/>
+                            <p:inputText value="#{controleTipoEndereco.tipoEndereco.id}" readonly="true" size="5"/>
+                            <p:outputLabel value="Descrição" for="txtDescricao"/>
+                            <p:inputText  id="txtDescricao" value="#{controleTipoEndereco.tipoEndereco.descricao}" maxlength="50" size="50"/>
+                        </p:panelGrid>
+                    </div>
+                    <ui:include src="/templates/ajaxstatus.xhtml"/>
+                </h:form>
+                
+            </p:dialog>
+
+        </ui:define>
+        
+    </ui:composition>
+
+</html>
+

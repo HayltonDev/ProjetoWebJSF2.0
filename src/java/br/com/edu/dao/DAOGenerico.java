@@ -6,135 +6,133 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 
-public class DAOGenerico<T> implements Serializable{
-    private List<T> listaObjetos;
-    private List<T> listaTodosObjetos;
-    protected Class classePersistente;
-    protected String menssagem = "";
-    protected EntityManager em; //vai servir para acessar as configs dos obj do BD
-    protected String ordem ="id"; //vai servir para na hora ordenar a classe por ou id, nome, etc
-    protected String filtro = "";
-    protected Integer maximoObjetos =8; //questão de paginação. Posteriormente irei criar um espaço na tela em que o user pode informar a quantidade de quantos objetos ele quer exibir
-    protected Integer posicaoAtual =0; //serve para controlar em que página está, pois se tenho 50 registros e exibe no maximoObjetos 10, serão 5 páginas.
-    protected Integer totalObjetos =0; //executar as operações em relação a paginação
+public class DAOGenerico<T> implements Serializable {
 
-    public DAOGenerico() {
+    private List<T> listaObjetos;
+    private List<T> listaTodos;
+    protected Class classePersistente;
+    protected String mensagem = "";
+    protected EntityManager em;
+    protected String ordem = "id";
+    protected String filtro = "";
+    protected Integer maximoObjetos = 8;
+    protected Integer posicaoAtual = 0;
+    protected Integer totalObjetos = 0;
+    
+    public DAOGenerico(){
         em = EntityManagerUtil.getEntityManager();
     }
-    
-    
-    //método que retorna a consulta páginada
+
     public List<T> getListaObjetos() {
-        String jpql = "from "+ classePersistente.getSimpleName();
+        String jpql = "from " + classePersistente.getSimpleName();
         String where = "";
-        filtro = filtro.replaceAll("[';-]", "");//essa limpeza aqui é contra ataques de injeção de sql direto pelo browser, sendo que o replaceAll vai pegar aqueles caracteres se o user informar e substituir pela a String vazia
-        if(filtro.length() > 0){//se for maior que zero, quer dizer que o usuário informou
-            if(ordem.equals("id")){
+        filtro = filtro.replaceAll("[';-]", "");
+        if (filtro.length() > 0){
+            if (ordem.equals("id")){
                 try {
-                    Integer.parseInt(filtro); //se realizar o parse, é pq o usuário realmente informou um inteiro
-                    where += " where  " + ordem + " = '" + filtro +"' ";
-                } catch (Exception e) {}
-            }else{
-                where += " where upper("+ ordem + ") like '%"+ filtro.toUpperCase() + "%' ";
-            }
+                    Integer.parseInt(filtro);
+                    where += " where " + ordem + " = '" + filtro + "' ";
+                } catch (Exception e){}
+            } else {
+                where += " where upper(" + ordem + ") like '" + filtro.toUpperCase() + "%' ";
+            }            
         }
-        jpql +=where;
-        jpql += " order by "+ordem;
-        totalObjetos = em.createQuery(jpql).getResultList().size();
-        return em.createQuery(jpql).setFirstResult(posicaoAtual).setMaxResults(maximoObjetos).getResultList(); //posição atual é qual a página atual, e maximo objeto a quantidade objeto a partir daquela página que irão ser retornados.
+        jpql += where;
+        jpql += " order by " + ordem;
+        totalObjetos = em.createQuery(jpql).getResultList().size();        
+        return em.createQuery(jpql).setFirstResult(posicaoAtual).setMaxResults(maximoObjetos).getResultList();
     }
     
-    //método que altera a páginação, isso é para o atributo inteiro que vai ser utilizad na consulta do métopdo getListaObjetos
+    public List<T> getListaTodos() {
+        String jpql = "from " + classePersistente.getSimpleName() + " order by " + ordem;
+        return em.createQuery(jpql).getResultList();
+    }   
     
-    public void paginaPrimeira(){
+    public void primeiro(){
         posicaoAtual = 0;
     }
     
-    public void paginaAnterior(){
+    public void anterior(){
         posicaoAtual -= maximoObjetos;
-        if(posicaoAtual < 0){ //teste para evitar que a posição da página fica negativa caso a atula posição já seja a primeira
-            posicaoAtual =0;
+        if (posicaoAtual < 0){
+            posicaoAtual = 0;
         }
     }
     
-    public void paginaProxima(){
-        if((posicaoAtual + maximoObjetos) < totalObjetos ){
-            posicaoAtual +=maximoObjetos;
+    public void proximo(){
+        if (posicaoAtual + maximoObjetos < totalObjetos){
+            posicaoAtual += maximoObjetos;
         }
     }
     
-    public void paginaUltima(){
-        //pode correr com que a divisão de objetos não dê uma divisão exata, por isso eu faço os testes abaixo
-        int resto = totalObjetos % maximoObjetos; 
-        if(resto > 0){
+    public void ultimo(){
+        int resto = totalObjetos % maximoObjetos;
+        if (resto > 0){
             posicaoAtual = totalObjetos - resto;
-        }else{
-            posicaoAtual = totalObjetos - maximoObjetos; 
+        } else {
+            posicaoAtual = totalObjetos - maximoObjetos;
         }
     }
     
-    // metodo abaixo. é interessante o usuário saber em que parte da página o usuário está navegando
     public String getMensagemNavegacao(){
         int ate = posicaoAtual + maximoObjetos;
-        if(ate > totalObjetos){
+        if (ate > totalObjetos){
             ate = totalObjetos;
-           
         }
-         return "Listando de " + (posicaoAtual + 1)+ " até " + ate + " de "+ totalObjetos + " registros";
+        return "Listando de " + (posicaoAtual + 1) + " até " + ate + " de " + totalObjetos + " registros";
     }
     
     public void roolback(){
-        if(em.getTransaction().isActive() ==false){
+        if (em.getTransaction().isActive() == false){
             em.getTransaction().begin();
-        }   
+        }
         em.getTransaction().rollback();
     }
     
-    public boolean persistGenerico(T obj){
+    public boolean persist(T obj){
         try {
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();
-            menssagem = obj.getClass().getSimpleName() + " salvo(a) com sucesso!";
+            mensagem = "Objeto persistido com sucesso!";
             return true;
-        } catch (Exception e) {
+        } catch (Exception e){
             roolback();
-            menssagem = "Erro ao salvar o(a) "+ obj.getClass().getSimpleName()+", sendo o erro "+  Util.getMensagemErro(e); //assim eu coloco o nome da classe e ainda utilizo o util para trazer até o ultimo nivel qual é realmente o erro
+            mensagem = "Erro ao persistir: " + Util.getMensagemErro(e);
             return false;
         }
     }
     
-    
-    public boolean mergeGenerico(T obj){
+    public boolean merge(T obj){
         try {
             em.getTransaction().begin();
             em.merge(obj);
             em.getTransaction().commit();
-            menssagem = obj.getClass().getSimpleName() + " salvo(a) com sucesso!";
+            mensagem = "Objeto persistido com sucesso!";
             return true;
-        } catch (Exception e) {
+        } catch (Exception e){
             roolback();
-            menssagem = "Erro ao salvar o(a) "+ obj.getClass().getSimpleName()+", sendo o erro "+  Util.getMensagemErro(e); //assim eu coloco o nome da classe e ainda utilizo o util para trazer até o ultimo nivel qual é realmente o erro
+            mensagem = "Erro ao persistir: " + Util.getMensagemErro(e);
             return false;
         }
-    }
+    }    
     
-    public boolean removeGenerico(T obj){
+    public boolean remove(T obj){
         try {
             em.getTransaction().begin();
             em.remove(obj);
             em.getTransaction().commit();
-            menssagem = obj.getClass().getSimpleName() + " removido com sucesso!";
+            mensagem = "Objeto removido com sucesso!";
             return true;
-        } catch (Exception e) {
+        } catch (Exception e){
             roolback();
-            menssagem = "Erro ao remover o(a) "+ obj.getClass().getSimpleName()+", sendo o erro "+  Util.getMensagemErro(e); //assim eu coloco o nome da classe e ainda utilizo o util para trazer até o ultimo nivel qual é realmente o erro
+            mensagem = "Erro ao remover: " + Util.getMensagemErro(e);
             return false;
         }
-    }
+    }  
     
-    public T localizarGenerico(Integer id){
-        roolback(); //faço o rollback pq pode acontecer que a página matenha algo na sessão de forma erra com o que está no banco. Com o rollback eu limpo a sessão e recupera o obj do BD 
+    public T localizar(Integer id){
+        roolback();
         T obj = (T) em.find(classePersistente, id);
         return obj;
     }
@@ -143,13 +141,10 @@ public class DAOGenerico<T> implements Serializable{
         this.listaObjetos = listaObjetos;
     }
 
-    public List<T> getListaTodosObjetos() {
-        String jpql = "from "+ classePersistente.getSimpleName() + " order by "+ ordem; //assim eu pego o nome da classse e faço a consulta
-        return em.createQuery(jpql).getResultList();
-    }
 
-    public void setListaTodosObjetos(List<T> listaTodosObjetos) {
-        this.listaTodosObjetos = listaTodosObjetos;
+
+    public void setListaTodos(List<T> listaTodos) {
+        this.listaTodos = listaTodos;
     }
 
     public Class getClassePersistente() {
@@ -160,12 +155,12 @@ public class DAOGenerico<T> implements Serializable{
         this.classePersistente = classePersistente;
     }
 
-    public String getMenssagem() {
-        return menssagem;
+    public String getMensagem() {
+        return mensagem;
     }
 
-    public void setMenssagem(String menssagem) {
-        this.menssagem = menssagem;
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
     }
 
     public EntityManager getEm() {
@@ -215,6 +210,4 @@ public class DAOGenerico<T> implements Serializable{
     public void setTotalObjetos(Integer totalObjetos) {
         this.totalObjetos = totalObjetos;
     }
-    
-    
 }

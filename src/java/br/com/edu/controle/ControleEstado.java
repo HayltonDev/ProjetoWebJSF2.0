@@ -18,61 +18,54 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Haylton
  */
-@ManagedBean(name = "controleEstado") //a mioria das ações(métodos) tem que ser void para usar o ajax com o viewscoped, pois não navegarei entre telas com ajax, usarei modals
-@ViewScoped//as classes controoles @ManagedBean servem para responder os comandos da interface, ou seja, do usuário. O suso de viewscoped é por causa da manutenção do estado irá funcionar com ajax
-public class ControleEstado implements Serializable{
-    private EstadoDAO<Estado> dao; //esse primeiro serve para interação com o banco de dados
-    private Estado estado; //esse vai servir para receber a instancia que vou estar editando ou inserindo 
-    private PaisDAO<Pais> paisDAO;//essa instanciação é pq ta tendo um relacionamento ManyToOne, pois são muitos estados para 1 pais
-
-    public ControleEstado() {
-        dao = new EstadoDAO<>(); // no construtor de qualquer classe controle @Managedbean, é bom iniciar no construtor os objetos do tipo DAO
-        paisDAO = new PaisDAO<>(); //inicializando o pais aqui no construtor, eu consiguirei listar os paises nas telas de Estado
+@ManagedBean(name = "controleEstado")
+@ViewScoped
+public class ControleEstado implements Serializable {
+    
+    private EstadoDAO<Estado> dao;
+    private Estado objeto;
+    private PaisDAO<Pais> daoPais;
+    
+    public ControleEstado(){
+        dao = new EstadoDAO<>();
+        daoPais = new PaisDAO<>();
     }
     
-    //é o único que vai continuar usando o retorno string para voltar a tela de listar
     public String listar(){
         return "/privado/estado/listar?faces-redirect=true";
     }
     
     public void novo(){
-        estado = new Estado();
-        
+        objeto = new Estado();        
     }
     
     public void salvar(){
         boolean persistiu = false;
-        if(estado.getId() == null){
-            persistiu = dao.persistGenerico(estado);
-        }else{
-            persistiu = dao.mergeGenerico(estado);
+        if (objeto.getId() == null){
+            persistiu = dao.persist(objeto);
+        } else {
+            persistiu = dao.merge(objeto);
         }
-        
-        if(persistiu){
-            Util.mensagemInformacao(dao.getMenssagem());
-            
-        }else{
-            Util.mensagemErro(dao.getMenssagem());
-           
+        if (persistiu){
+            Util.mensagemInformacao(dao.getMensagem());            
+        } else {
+            Util.mensagemErro(dao.getMensagem());            
         }
     }
     
-    
-    
     public void editar(Integer id){
-        estado = dao.localizarGenerico(id);
-
+        objeto = dao.localizar(id);        
     }
     
     public void remover(Integer id){
-        estado = dao.localizarGenerico(id);
-        if(dao.removeGenerico(estado)){
-            Util.mensagemInformacao(dao.getMenssagem());
-        }else{
-            Util.mensagemErro(dao.getMenssagem()); 
+        objeto = dao.localizar(id);
+        if (dao.remove(objeto)){
+            Util.mensagemInformacao(dao.getMensagem());
+        } else {
+            Util.mensagemErro(dao.getMensagem());
         }
     }
-
+    
     public EstadoDAO getDao() {
         return dao;
     }
@@ -81,21 +74,19 @@ public class ControleEstado implements Serializable{
         this.dao = dao;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public Estado getObjeto() {
+        return objeto;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setObjeto(Estado objeto) {
+        this.objeto = objeto;
+    }    
+
+    public PaisDAO<Pais> getDaoPais() {
+        return daoPais;
     }
 
-    public PaisDAO<Pais> getPaisDAO() {
-        return paisDAO;
+    public void setDaoPais(PaisDAO<Pais> daoPais) {
+        this.daoPais = daoPais;
     }
-
-    public void setPaisDAO(PaisDAO<Pais> paisDAO) {
-        this.paisDAO = paisDAO;
-    }
-    
-    
 }
