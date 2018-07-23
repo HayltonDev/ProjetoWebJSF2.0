@@ -45,4 +45,10 @@ public class PessoaFisicaDAO<T> extends DAOGenerico<PessoaFisica> implements Ser
         Permissao permissao = em.getReference(Permissao.class, "Administrador");
         return permissao;
     }
+    
+    public Permissao temPermissaoUsuario(){
+        
+        Permissao permissao = em.getReference(Permissao.class, "Usuario");
+        return permissao;
+    }
 }

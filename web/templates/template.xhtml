@@ -53,6 +53,11 @@
                                             ajax="false"
                                             action="#{controleLogin.paginaLogin()}"
                                             icon="ui-icon-person"/>
+                                <p:menuitem value="Criar conta"
+                                            rendered="#{controleLogin.usuarioLogado == null}"
+                                            ajax="false"
+                                            action="#{controleNovaConta.criarConta()}"
+                                            icon="ui-icon-plus"/>
                                 </p:submenu>
                             </p:column>
                         </p:submenu>

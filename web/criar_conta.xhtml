@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Criar Conta</ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <div align="center">
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            <h4>Registrar-se</h4>
+                            
+                        </f:facet>
+                        <p:outputLabel value="ID"/>
+                        <p:inputText value="#{controleNovaConta.pf.id}" readonly="true" size="5"/>
+                                    <p:outputLabel value="Nome" for="txtNome"/>
+                                    <p:inputText id="txtNome" value="#{controleNovaConta.pf.nome}" size="50" maxlength="50"
+                                                 placeholder="Obrigatório"/>
+                                    <p:outputLabel value="Telefone" for="txtTelefone"/>
+                                    <p:inputMask id="txtTelefone" value="#{controleNovaConta.pf.telefone}"
+                                                 mask="(99)99999-9999" placeholder="Obrigatório" size="14"/>
+                                    <p:outputLabel value="Email" for="txtEmail"/>
+                                    <p:inputText id="txtEmail" value="#{controleNovaConta.pf.email}" size="50" maxlength="50"
+                                                 placeholder="Obrigatório"/> 
+                                    <p:outputLabel value="RG" for="txtRG"/>
+                                    <p:inputMask id="txtRG" value="#{controleNovaConta.pf.rg}"
+                                                 mask="9999999999" placeholder="Obrigatório" size="10"/>
+                                    <p:outputLabel value="CPF" for="txtCPF"/>
+                                    <p:inputMask id="txtCPF" value="#{controleNovaConta.pf.cpf}"
+                                                 mask="999.999.999-99" placeholder="Obrigatório" size="14"/>    
+                                    <p:outputLabel value="Nascimento" for="txtNascimento"/>
+                                    <p:calendar id="txtNascimento" value="#{controleNovaConta.pf.nascimento}"
+                                                mask="true" pattern="dd/MM/yyyy" navigator="true" size="10">
+                                        <f:converter converterId="converterCalendar"/>
+                                    </p:calendar>
+                                    <p:outputLabel value="Nome de usuário" for="txtUsuario"/>
+                                    <p:inputText id="txtUsuario" value="#{controleNovaConta.pf.nomeUsuario}"
+                                                 placeholder="Obrigatório" size="20" maxlength="20"/>
+                                    <p:outputLabel value="Senha" for="txtSenha"/>
+                                    <p:password id="txtSenha" value="#{controleNovaConta.pf.senha}"
+                                                redisplay="true" size="10" maxlength="10"
+                                                feedback="true"
+                                                placeholder="Obrigatória"
+                                                weakLabel="Senha fraca"
+                                                strongLabel="Senha forte"
+                                                goodLabel="Senha boa"/>
+                                    <f:facet name="footer">
+                                        <div align="center">
+                                            <p:commandButton value="Salvar"
+                                             icon="ui-icon-disk"
+                                             action="#{controleNovaConta.salvarConta()}"
+                                             process="@all"
+                                             oncomplete="PF('dlgAnuncio').show();"
+                                             update="@form"/>
+                                        </div>
+                                         
+                                    </f:facet>
+                        
+                        
+                    </p:panelGrid>
+                    
+                    <p:dialog id="dialogo" widgetVar="dlgAnuncio" closable="true" draggable="false" modal="true" header="Situação: " showEffect="fade" hideEffect="slide">
+                        <p:outputLabel value="Conta criada com sucesso!!!"/>
+                    </p:dialog>
+                    
+                </div>
+                
+            </h:form>
+            
+        </ui:define>
+        
+    </ui:composition>
+
+</html>
+

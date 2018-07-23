@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Haylton
  */
-@WebFilter(urlPatterns = "/privado/*")// o que eu quero conttrolar aqui! Não deixar acessar o diretório privado caso não esteja logado. Entaõ todo o conteúdo dentro do privado, vai passar antes por esse filtro
+//@WebFilter(urlPatterns = "/privado/*")// o que eu quero conttrolar aqui! Não deixar acessar o diretório privado caso não esteja logado. Entaõ todo o conteúdo dentro do privado, vai passar antes por esse filtro
 public class FiltroSegurança implements Filter{
 
     @Override

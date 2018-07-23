@@ -7,6 +7,7 @@ import br.com.edu.dao.TipoEnderecoDAO;
 import br.com.edu.util.Util;
 import br.com.modeljpa.modelo.Cidade;
 import br.com.modeljpa.modelo.Endereco;
+import br.com.modeljpa.modelo.Permissao;
 import br.com.modeljpa.modelo.PessoaFisica;
 import br.com.modeljpa.modelo.Produto;
 import br.com.modeljpa.modelo.TipoEndereco;
@@ -15,14 +16,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+
 
 /**
  *
  * @author Haylton
  */
 @ManagedBean(name = "controlePessoaFisica")
-@ViewScoped
+@ViewScoped//volta pra viewscopped quando eu implementar o sing in e singup
 public class ControlePessoaFisica implements Serializable {
     
     private PessoaFisicaDAO<PessoaFisica> dao;
@@ -34,12 +37,14 @@ public class ControlePessoaFisica implements Serializable {
     private ProdutoDAO<Produto> daoProduto;
     private Produto produto;
 
+
     
     public ControlePessoaFisica(){
         dao = new PessoaFisicaDAO<>();
         daoCidade = new CidadeDAO<>();
         daoTipoEndereco = new TipoEnderecoDAO<>();       
         daoProduto = new ProdutoDAO<>();
+
     }
     
     
@@ -76,6 +81,7 @@ public class ControlePessoaFisica implements Serializable {
     public String listar(){
         return "/privado/pessoafisica/listar?faces-redirect=true";
     }
+
     
     public void novoEndereco(){
         endereco = new Endereco();
@@ -103,11 +109,15 @@ public class ControlePessoaFisica implements Serializable {
         objeto = new PessoaFisica();        
     }
     
-    public void salvar(){
+    public void salvar(PessoaFisica pessoaFisica){
         boolean persistiu = false;
+        Permissao permissao = dao.temPermissaoUsuario();
+        objeto = pessoaFisica;
         if (objeto.getId() == null){
+            objeto.getPermissoes().add(permissao);
             persistiu = dao.persist(objeto);
         } else {
+            objeto.getPermissoes().add(permissao);
             persistiu = dao.merge(objeto);
         }
         if (persistiu){
