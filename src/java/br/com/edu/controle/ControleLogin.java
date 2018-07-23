@@ -47,6 +47,13 @@ public class ControleLogin implements Serializable{
         Util.mensagemInformacao("Logout realizado com sucesso!");
         return "/index?faces-redirect=true";
     }
+    
+     public boolean isAdministrador(){
+        String perfil = dao.temPermissao().getNome();
+        return usuarioLogado.getPermissoes().get(0).getNome().equals(perfil);
+      
+
+    }
 
     public PessoaFisicaDAO<PessoaFisica> getDao() {
         return dao;

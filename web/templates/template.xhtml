@@ -16,7 +16,7 @@
                 <h:form id="menu">
                     <p:megaMenu>
                         <p:menuitem value="Início" url="/index.xhtml" icon="ui-icon-home" />
-                        <p:submenu label="Cadastros" rendered="#{controleLogin.usuarioLogado != null}">
+                        <p:submenu label="Cadastros" rendered="#{controleLogin.usuarioLogado != null and controleLogin.administrador}">
                             <p:column>
                                 <p:submenu label="Básicos">
                                     <p:menuitem action="#{controlePais.listar()}"

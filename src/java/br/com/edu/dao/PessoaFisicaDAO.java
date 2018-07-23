@@ -39,4 +39,10 @@ public class PessoaFisicaDAO<T> extends DAOGenerico<PessoaFisica> implements Ser
         query.setParameter("usuario", usuario.toUpperCase());
         return (PessoaFisica) query.getSingleResult();
     }
+    
+    public Permissao temPermissao(){
+        
+        Permissao permissao = em.getReference(Permissao.class, "Administrador");
+        return permissao;
+    }
 }

@@ -6,11 +6,13 @@ import java.util.Calendar;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 
 /**
  *
  * @author Haylton
  */
+@FacesConverter("converterCalendar")
 public class ConverterCalendar implements Converter, Serializable{
      private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     @Override

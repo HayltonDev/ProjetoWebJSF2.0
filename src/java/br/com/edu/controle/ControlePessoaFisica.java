@@ -33,6 +33,7 @@ public class ControlePessoaFisica implements Serializable {
     private Boolean novoEndereco;
     private ProdutoDAO<Produto> daoProduto;
     private Produto produto;
+
     
     public ControlePessoaFisica(){
         dao = new PessoaFisicaDAO<>();
@@ -129,6 +130,8 @@ public class ControlePessoaFisica implements Serializable {
         }
     }
     
+   
+    
     public PessoaFisicaDAO getDao() {
         return dao;
     }
@@ -192,6 +195,10 @@ public class ControlePessoaFisica implements Serializable {
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
+
+  
+    
+    
 
 
 }
