@@ -10,3 +10,28 @@
 .ui-layout-north .ui-layout-unit-content {
     overflow:visible !important;
 }
+
+
+
+
+.ui-tabs.ui-tabs-top > .ui-tabs-nav {
+    display: flex;
+    justify-content: center;
+    
+    padding: 0;
+    list-style: inside;
+}
+
+
+
+.ui-tabs.ui-tabs-top > .ui-tabs-nav li {
+    width: 210px;
+    float: none !important;
+            display: inline-block;
+    
+}
+.ui-tabs .ui-tabs-nav li a{
+    display:block;text-align:center
+    
+}
+

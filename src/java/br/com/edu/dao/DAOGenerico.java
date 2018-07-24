@@ -94,7 +94,12 @@ public class DAOGenerico<T> implements Serializable {
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();
-            mensagem = "Objeto persistido com sucesso!";
+            if(obj.getClass().getSimpleName().equals("PessoaFisica")){
+                mensagem = "Cadastro efetuado com sucesso!";
+            }else{
+                mensagem = "Objeto persistido com sucesso!"; 
+            }
+            
             return true;
         } catch (Exception e){
             roolback();

@@ -26,7 +26,7 @@ public class ControleLogin implements Serializable{
     }
     
     public String paginaLogin(){
-        return "/login?faces-redirect=true";
+        return "/loginCadastro?faces-redirect=true";
     }
     
     public String efetuarLogin(){

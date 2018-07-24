@@ -26,14 +26,10 @@ public class ControleNovaConta extends ControlePessoaFisica implements Serializa
         pf = new PessoaFisica();
     }
 
-    public String criarConta() {
-        return "/criar_conta?faces-redirect=true";
-    }
-
     public String salvarConta() {
         salvar(pf);
         pf = null;
-        return "/login.xhtml?faces-redirect=true";
+        return "/loginCadastro.xhtml?faces-redirect=true";
     }
 
     public PessoaFisica getPf() {

@@ -12,7 +12,7 @@
             <h:outputScript library="js" name="scripts.js"/>
         </h:head>
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" header="Sistema com JSF do IFSUL" style="text-align: center">
+            <p:layoutUnit position="north" header="Sistema Nameless" style="text-align: center">
                 <h:form id="menu">
                     <p:megaMenu>
                         <p:menuitem value="Início" url="/index.xhtml" icon="ui-icon-home" />
@@ -48,16 +48,12 @@
                                             ajax="false"
                                             action="#{controleLogin.efetuarLogout()}"
                                             icon="ui-icon-power"/>
-                                <p:menuitem value="Entrar no sistema"
+                                <p:menuitem value="Entrar ou Cadastrar-se"
                                             rendered="#{controleLogin.usuarioLogado == null}"
                                             ajax="false"
                                             action="#{controleLogin.paginaLogin()}"
                                             icon="ui-icon-person"/>
-                                <p:menuitem value="Criar conta"
-                                            rendered="#{controleLogin.usuarioLogado == null}"
-                                            ajax="false"
-                                            action="#{controleNovaConta.criarConta()}"
-                                            icon="ui-icon-plus"/>
+                                
                                 </p:submenu>
                             </p:column>
                         </p:submenu>
